@@ -1,0 +1,117 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "resourcePrefix": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "eastus"
+    }
+  },
+  "functions": [],
+  "resources": [
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}plan{1}', parameters('resourcePrefix'), parameters('location'))]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "S1"
+      },
+      "kind": "linux",
+      "properties": {
+        "reserved": true
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}app01{1}01', parameters('resourcePrefix'), parameters('location'))]",
+      "location": "[parameters('location')]",
+      "kind": "app",
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', format('{0}plan{1}', parameters('resourcePrefix'), parameters('location')))]",
+        "siteConfig": {
+          "linuxFxVersion": "DOTNETCORE|5.0",
+          "appSettings": [
+            {
+              "name": "InstanceName",
+              "value": "[format('{0}app01{1}01', parameters('resourcePrefix'), parameters('location'))]"
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', format('{0}plan{1}', parameters('resourcePrefix'), parameters('location')))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}app01{1}02', parameters('resourcePrefix'), parameters('location'))]",
+      "location": "[parameters('location')]",
+      "kind": "app",
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', format('{0}plan{1}', parameters('resourcePrefix'), parameters('location')))]",
+        "siteConfig": {
+          "linuxFxVersion": "DOTNETCORE|5.0",
+          "appSettings": [
+            {
+              "name": "InstanceName",
+              "value": "[format('{0}app01{1}02', parameters('resourcePrefix'), parameters('location'))]"
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', format('{0}plan{1}', parameters('resourcePrefix'), parameters('location')))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}app02{1}01', parameters('resourcePrefix'), parameters('location'))]",
+      "location": "[parameters('location')]",
+      "kind": "app",
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', format('{0}plan{1}', parameters('resourcePrefix'), parameters('location')))]",
+        "siteConfig": {
+          "linuxFxVersion": "DOTNETCORE|5.0",
+          "appSettings": [
+            {
+              "name": "InstanceName",
+              "value": "[format('{0}app02{1}01', parameters('resourcePrefix'), parameters('location'))]"
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', format('{0}plan{1}', parameters('resourcePrefix'), parameters('location')))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}app02{1}02', parameters('resourcePrefix'), parameters('location'))]",
+      "location": "[parameters('location')]",
+      "kind": "app",
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', format('{0}plan{1}', parameters('resourcePrefix'), parameters('location')))]",
+        "siteConfig": {
+          "linuxFxVersion": "DOTNETCORE|5.0",
+          "appSettings": [
+            {
+              "name": "InstanceName",
+              "value": "[format('{0}app02{1}02', parameters('resourcePrefix'), parameters('location'))]"
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', format('{0}plan{1}', parameters('resourcePrefix'), parameters('location')))]"
+      ]
+    }
+  ]
+}
